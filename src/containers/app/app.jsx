@@ -88,7 +88,7 @@ const AppContainer = ({ route }) => (
                     <li><NavigationLink to="/home" activeClassName="active">Home</NavigationLink></li>
                     <li><NavigationLink to="/events" activeClassName="active">Events</NavigationLink></li>
                     <li><NavigationLink to="/speakers">Speakers</NavigationLink></li>
-                    <li><NavigationLink to="#feed">Feed</NavigationLink></li>
+                    <li><NavigationLink to="/feed">Feed</NavigationLink></li>
                 </NavigationBar>
             </Header>
             <main>
