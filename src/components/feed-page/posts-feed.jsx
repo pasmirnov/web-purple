@@ -1,14 +1,18 @@
-import React from 'React';
+import React from 'react';
 import styled, { withTheme } from 'styled-components';
+
+import posts, { tags } from './posts-stub';
 
 import {
     FilterBlock,
-    Search
+    Search,
 } from '../page-filter';
+
 import { TagList } from '../common/tag';
 import { media } from '../../utils/css-utils';
-import MainContainer from '../common/main-container'
+import MainContainer from '../common/main-container';
 import BlockHeader from '../common/block-header';
+import { WebpurpleStampIcon } from '../icons';
 
 const Post = styled.li`
     position: relative;
@@ -22,8 +26,6 @@ const Post = styled.li`
     overflow: hidden;
     box-shadow: 0 0 8px 1px #bbb;
 `;
-
-
 
 const PostsList = styled.ul`
     list-style: none;
@@ -95,44 +97,69 @@ const AuthorPhoto = styled.img`
     border-radius: 50%;
     margin-right: 1.2rem;
 `;
-const AuthorName = styled.div`
-     display: flex;
+const BorderlessButton = styled.button` 
+    font-family: Rubik;
+	font-size: 2.4rem;
+	font-weight: bold;
+	background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+	color: ${props => props.color || props.theme.greyishBrown};
+    `;
+const Icon = styled.span`
+    width: 1.5rem;
+	font-weight: bold;
+	margin-right: 1.2rem;
+	color: ${props => props.color || props.theme.warmGrey};
+	line-height: 1.0;
 `;
 
 
-const PostsFeed = ({ tags, onTagClick }) => (
+const PostsFeed = ({ theme }) => (
     <MainContainer>
         <BlockHeader>Feed</BlockHeader>
         <FilterBlock>
-            <Search placeholder="Keyword..."></Search>
+            <BorderlessButton> <Icon>+</Icon>Suggest news</BorderlessButton>
+            <Search placeholder="Keyword..." />
         </FilterBlock>
+        {(tags.length > 0) && (
+            <TagList label="News' tags" tags={tags} />
+        )}
         <PostsList>
-            <Post>
-                <BackgroundShape>
-                    <BackgroundImage url="https://cdn.pixabay.com/photo/2014/03/29/09/17/cat-300572_960_720.jpg" />
-                </BackgroundShape>
-                <header>
-                    <Info>
-                        <time>{new Date().toLocaleDateString()}</time>
-                    </Info>
-                    <Info>
-                        <Title>A Detailed Introduction To Webpack</Title>
-                    </Info>
-                </header>
+            {posts.map((post, postIndex) => (
+                <Post>
+                    <BackgroundShape>
+                        <BackgroundImage url={post.image} />
+                    </BackgroundShape>
+                    <header>
+                        <Info>
+                            {post.original ? <WebpurpleStampIcon style={{ marginRight: '1.6em' }} /> : ''}
+                            <time>{new Date(post.date).toLocaleDateString()}</time>
+                        </Info>
+                        <Info>
+                            <Title color={postIndex % 2 ? theme.vividPurpleTwo : theme.lipstick} href={post.url}>{post.title}</Title>
+                        </Info>
+                    </header>
+                    <Description>
+                        {post.description}
+                    </Description>
+                    <AuthorBadge>
+                        <AuthorPhoto src={post.author.avatar} />
+                        {post.author.displayName}
+                    </AuthorBadge>
 
-                <Description>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam nihil dolore adipisci, enim ex explicabo aut quasi voluptatem consequatur ipsum nemo ratione, officia at error maiores neque voluptas saepe. Laudantium.
-                </Description>
-                <AuthorBadge>
-                    <AuthorPhoto src="https://avatars0.githubusercontent.com/u/8476552?v=3&u=a4505b0d68ce109043026727195a8fe95cfb321d&s=400" />
-                    Pavel Smirnov
-                </AuthorBadge>
+                    <TagList tags={post.tags} />
 
-                <TagList tags={['test', 'test', 'test']} />
-
-            </Post>
+                </Post>
+            ))}
         </PostsList>
-    </MainContainer>
-);
+    </MainContainer>);
+
+PostsFeed.propTypes = {
+    theme: React.PropTypes.object,
+};
 
 export default withTheme(PostsFeed);
