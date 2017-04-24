@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import styled from 'styled-components';
 
@@ -8,12 +8,13 @@ import Avatar from '../common/avatar';
 
 const Card = styled.div`
     display: flex;
-    padding: 3.5rem 0;
+    padding: 0 0 3.5rem;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    ${media.phone`
+    ${media.desktop`
         width: 50%;
+        padding: 3.5rem 0;
         flex-direction: row; 
         align-items: flex-start;
     `}
@@ -23,18 +24,18 @@ const SpeakerAvatarContainer = styled.div`
     width: 12rem;
     height: 20rem;
     padding-bottom: 2rem;
-    ${media.phone`padding-bottom: 0;`}
+    ${media.desktop`padding-bottom: 0;`}
 `;
 
 const SpeakerInfoContainer = styled.div`
     text-align: center;
-    ${media.phone`
+    ${media.desktop`
         text-align: left;
         padding-left: 3.5rem;
     `}
 `;
 
-const speakerLinkHover = (color) => `
+const speakerLinkHover = color => `
     position: relative;
     display: inline-block;
     
@@ -82,7 +83,7 @@ const SpeakerDescription = styled.p`
 const SpeakerAdditionalContainer = styled.div`
     display: flex;
     justify-content: center;
-    ${media.phone`justify-content: flex-start;`}
+    ${media.desktop`justify-content: flex-start;`}
 `;
 
 const CountOFTalks = styled.a`
@@ -95,20 +96,31 @@ const CountOFTalks = styled.a`
     ${props => speakerLinkHover(props.theme.lipstick)}
 `;
 
-const SpeakerCard = ({ avatar, speaker }) => (
+// TODO: add field "contacts" into the speakers' object for SpeakerContacts
+// TODO: implement the link to speaker information
+const SpeakerCard = ({ speaker }) => (
     <Card>
         <SpeakerAvatarContainer>
-            <Avatar avatar={avatar} />
+            <Avatar avatar={speaker.vkPhotoUrl} />
         </SpeakerAvatarContainer>
         <SpeakerInfoContainer>
-            <SpeakerInitials href="#">{speaker.initials}</SpeakerInitials>
-            <SpeakerDescription>{speaker.description}</SpeakerDescription>
+            <SpeakerInitials href="#">{speaker.displayNamedisplayName}</SpeakerInitials>
+            <SpeakerDescription>{speaker.jobTitle}</SpeakerDescription>
             <SpeakerAdditionalContainer>
                 <SpeakerContacts />
-                <CountOFTalks href="#">{speaker.talksCount} talks</CountOFTalks>
+                <CountOFTalks href="#">{speaker.talks.length} talks</CountOFTalks>
             </SpeakerAdditionalContainer>
         </SpeakerInfoContainer>
     </Card>
 );
+
+SpeakerCard.propTypes = {
+    speaker: PropTypes.shape({
+        vkPhotoUrl: PropTypes.string,
+        displayNamedisplayName: PropTypes.string,
+        jobTitle: PropTypes.string,
+        talks: PropTypes.array,
+    }),
+};
 
 export default SpeakerCard;

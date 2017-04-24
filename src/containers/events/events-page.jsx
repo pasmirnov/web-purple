@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { reduxForm } from 'redux-form';
-import { List } from 'immutable';
 
 import SubscriptionForm from '../../components/subscription-form/subscription-form';
 import {
@@ -14,7 +13,7 @@ import {
     selectedTagsSelector,
     toggleTag,
     FORM_KEY,
-    search,
+    searchEvents,
     addEvent,
 } from './events-reducer';
 import EventsFeed from '../../components/events-page/events-feed';
@@ -25,8 +24,6 @@ class EventsPageContainer extends React.Component {
     static propTypes = {
         loadEvents: React.PropTypes.func.isRequired,
         onAddEvent: React.PropTypes.func.isRequired,
-        events: React.PropTypes.instanceOf(List).isRequired,
-        tags: React.PropTypes.array.isRequired,
     };
 
     constructor(props) {
@@ -76,7 +73,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     loadEvents,
     onTagClick: toggleTag,
-    onSearch: search,
+    onSearch: searchEvents,
     onAddEvent: addEvent,
 }, dispatch);
 
@@ -84,7 +81,7 @@ export default withRouter(
     reduxForm({ form: FORM_KEY })(
         connect(
             mapStateToProps,
-            mapDispatchToProps
-        )(EventsPageContainer)
-    )
+            mapDispatchToProps,
+        )(EventsPageContainer),
+    ),
 );

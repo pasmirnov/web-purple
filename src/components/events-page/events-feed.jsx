@@ -22,11 +22,13 @@ const FlexRow = styled.div`
     display: flex;
 `;
 
-const StyledLoader = styled(Loader)`
+// TODO: move to the common components if it needs (it is used the pages of events and speakers)
+export const StyledLoader = styled(Loader)`
     margin: 15rem auto;
 `;
 
-const NoEventsBlock = styled.div`
+// TODO: move to the common components if it needs (it is used the pages of events and speakers)
+export const NoEventsBlock = styled.div`
     margin: 10rem 0;
     text-align: center;
     font-family: 'Oxygen', sans-serif;
@@ -35,6 +37,10 @@ const NoEventsBlock = styled.div`
 `;
 
 class EventsFeed extends React.Component {
+
+    static shouldExpandSearch() {
+        return isPhone() || isTablet();
+    }
 
     constructor(props) {
         super(props);
@@ -49,18 +55,14 @@ class EventsFeed extends React.Component {
         this.setState({ showSearch });
     }
 
-    shouldExpandSearch() {
-        return isPhone() || isTablet();
-    }
-
     handleSearchFocus() {
-        if (this.shouldExpandSearch()) {
+        if (EventsFeed.shouldExpandSearch()) {
             this.toggleSearch(true);
         }
     }
 
     handleSearchBlur() {
-        if (this.shouldExpandSearch()) {
+        if (EventsFeed.shouldExpandSearch()) {
             this.toggleSearch(false);
         }
     }
@@ -103,7 +105,7 @@ class EventsFeed extends React.Component {
 
                 {isFetching ? <StyledLoader size="80" border="8" />
                     : events.size === 0
-                        ? <NoEventsBlock>There is no events satisfying your query...</NoEventsBlock>
+                        ? <NoEventsBlock>There are no events satisfying your query...</NoEventsBlock>
                         : <EventList events={events} />
                 }
             </MainContainer>
@@ -118,6 +120,7 @@ EventsFeed.propTypes = {
     show: React.PropTypes.string,
     onTagClick: React.PropTypes.func,
     onCreateEvent: React.PropTypes.func,
+    onSearch: React.PropTypes.func,
     isFetching: React.PropTypes.bool,
 };
 

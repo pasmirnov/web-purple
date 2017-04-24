@@ -1,7 +1,7 @@
 import App from './containers/app/app';
-import HomePage from './components/home-page/home-page';
+import HomePage from './containers/home-page/home-page';
 import EventsPage from './containers/events/events-page';
-import SpeakersPage from './components/speakers-page/speakers-page';
+import SpeakersPage from './containers/speakers/speakers-page';
 import ContributorsPage from './containers/contributors/contributors-page';
 import FeedPage from './containers/feed/feed-page';
 
@@ -12,10 +12,6 @@ export default [{
         {
             path: '/',
             exact: true,
-            component: HomePage,
-        },
-        {
-            path: '/home',
             component: HomePage,
         },
         {
