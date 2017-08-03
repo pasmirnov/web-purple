@@ -1,6 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { reduxForm } from 'redux-form';
 
@@ -15,6 +16,7 @@ import {
     FORM_KEY,
     searchEvents,
     addEvent,
+    removeEvent,
 } from './events-reducer';
 import EventsFeed from '../../components/events-page/events-feed';
 import EditEventForm from './edit-event-form';
@@ -75,13 +77,14 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     onTagClick: toggleTag,
     onSearch: searchEvents,
     onAddEvent: addEvent,
+    onDeleteEvent: removeEvent,
 }, dispatch);
 
-export default withRouter(
-    reduxForm({ form: FORM_KEY })(
-        connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        )(EventsPageContainer),
+export default compose(
+    withRouter,
+    reduxForm({ form: FORM_KEY }),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
     ),
-);
+)(EventsPageContainer);

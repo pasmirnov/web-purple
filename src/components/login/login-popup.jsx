@@ -1,20 +1,21 @@
 import * as React from 'react';
+import { mapProps, withState, compose } from 'recompose';
 import styled from 'styled-components';
 import Color from 'color';
 
 import {
     VkWipIcon,
     FacebookIcon,
-    GooglePlusIcon,
+    // GooglePlusIcon,
 } from '../icons/social';
 import LogoIcon from '../icons/webpurple-logo-icon';
-import EmailIcon from '../icons/email-icon';
-import PadlockIcon from '../icons/padlock-icon';
+// import EmailIcon from '../icons/email-icon';
+// import PadlockIcon from '../icons/padlock-icon';
 
 import Popup from '../common/popup';
 import ArrowButton from '../arrow-button/arrow-button';
-import Separator from '../common/separator';
-import Input from '../common/input';
+// import Separator from '../common/separator';
+// import Input from '../common/input';
 
 const LoginHeader = styled.header`
     text-align: center;
@@ -25,18 +26,18 @@ const LoginContainer = styled.div`
     display: flex;
 `;
 
-const LoginFooter = styled.footer`
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1.5em;
-`;
+// const LoginFooter = styled.footer`
+//     align-items: center;
+//     display: flex;
+//     justify-content: space-around;
+//     margin-top: 1.5em;
+// `;
 
-const FormFooter = styled.footer`
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-`;
+// const FormFooter = styled.footer`
+//     align-items: center;
+//     display: flex;
+//     justify-content: space-between;
+// `;
 
 const Title = styled.h2`
     align-items: center;
@@ -60,7 +61,7 @@ const Subtitle = styled.h3`
     margin: 0;
 `;
 
-const SocialButton = styled.button`
+const SocialButton = styled.a`
     background-color: ${props => props.bgColor};
     border-radius: 0.111em;
     border: none;
@@ -73,7 +74,7 @@ const SocialButton = styled.button`
     padding: 1.167em;
     position: relative;
     transition: all .3s;
-    width: 100%;
+    text-decoration: none;
     
     & > svg {
         position: absolute;
@@ -90,59 +91,53 @@ const SocialButtonText = styled.span`
     text-align: center;
 `;
 
-const Link = styled.a`
-    color: #ccc;
-    cursor: pointer;
-    font: 1.6em/1.5 Oxygen;
-    
-    &:hover {
-        text-decoration: underline;
-    }
-`;
+// const Link = styled.a`
+//     color: #ccc;
+//     cursor: pointer;
+//     font: 1.6em/1.5 Oxygen;
+//
+//     &:hover {
+//         text-decoration: underline;
+//     }
+// `;
 
-const SeparatorText = styled.span`
-    color: #545454;
-    font: 1.8em Oxygen;
-    margin: 0 1em;
-    text-transform: lowercase;
-`;
+// const SeparatorText = styled.span`
+//     color: #545454;
+//     font: 1.8em Oxygen;
+//     margin: 0 1em;
+//     text-transform: lowercase;
+// `;
 
 const fbColor = new Color('#3b5998');
 const fbColorHover = fbColor.darken(0.1).string();
 const vkColor = new Color('#45668e');
 const vkColorHover = vkColor.darken(0.1).string();
-const gpColor = new Color('#f34a38');
-const gpColorHover = gpColor.darken(0.1).string();
+// const gpColor = new Color('#f34a38');
+// const gpColorHover = gpColor.darken(0.1).string();
 
-export default class LoginPopup extends React.Component {
+const LoginPopup = ({ isDialogOpened, showDialog, hideDialog }) => (
+    <LoginContainer>
+        <ArrowButton className="e2e-sing-in-button" onClick={showDialog}>Sign In</ArrowButton>
+        <Popup
+            isOpen={isDialogOpened}
+            contentLabel="Login"
+            onRequestClose={hideDialog}
+            width={400}>
+            <LoginHeader className="e2e-sing-in-dialog">
+                <Title><LogoIcon /> WebPurple</Title>
+                <Subtitle>Login to your account</Subtitle>
+            </LoginHeader>
 
-    constructor(props) {
-        super(props);
-        this.state = { dialogOpened: false };
-    }
+            <SocialButton bgColor={fbColor.string()} bgColorHover={fbColorHover} href="/auth/fb">
+                <FacebookIcon />
+                <SocialButtonText>Login with Facebook</SocialButtonText>
+            </SocialButton>
+            <SocialButton bgColor={vkColor.string()} bgColorHover={vkColorHover} href="/auth/vk">
+                <VkWipIcon />
+                <SocialButtonText>Login with VK</SocialButtonText>
+            </SocialButton>
 
-    render() {
-        return (
-            <LoginContainer>
-                <ArrowButton onClick={() => this.setState({ dialogOpened: true })}>Sign In</ArrowButton>
-                <Popup
-                    isOpen={this.state.dialogOpened}
-                    contentLabel="Login"
-                    onRequestClose={() => this.setState({ dialogOpened: false })}
-                    width={400}>
-                    <LoginHeader>
-                        <Title><LogoIcon /> WebPurple</Title>
-                        <Subtitle>Login to your account</Subtitle>
-                    </LoginHeader>
-
-                    <SocialButton bgColor={fbColor.string()} bgColorHover={fbColorHover}>
-                        <FacebookIcon />
-                        <SocialButtonText>Login with Facebook</SocialButtonText>
-                    </SocialButton>
-                    <SocialButton bgColor={vkColor.string()} bgColorHover={vkColorHover}>
-                        <VkWipIcon />
-                        <SocialButtonText>Login with VK</SocialButtonText>
-                    </SocialButton>
+            {/*
                     <SocialButton bgColor={gpColor.string()} bgColorHover={gpColorHover}>
                         <GooglePlusIcon />
                         <SocialButtonText>Login with Google</SocialButtonText>
@@ -176,8 +171,16 @@ export default class LoginPopup extends React.Component {
                         <Link>Forgot password?</Link>
                         <Link>Need support?</Link>
                     </LoginFooter>
-                </Popup>
-            </LoginContainer>
-        );
-    }
-}
+                    */}
+        </Popup>
+    </LoginContainer>
+);
+
+export default compose(
+    withState('isDialogOpened', 'toggleDialog', false),
+    mapProps(({ isDialogOpened, toggleDialog }) => ({
+        isDialogOpened,
+        showDialog: () => toggleDialog(true),
+        hideDialog: () => toggleDialog(false),
+    })),
+)(LoginPopup);

@@ -3,6 +3,9 @@ import HomePage from './containers/home-page/home-page';
 import EventsPage from './containers/events/events-page';
 import SpeakersPage from './containers/speakers/speakers-page';
 import ContributorsPage from './containers/contributors/contributors-page';
+
+import EventPageContainer from './containers/events/event-page';
+import NotFoundPage from './components/common/not-found';
 import FeedPage from './containers/feed/feed-page';
 
 export default [{
@@ -19,6 +22,10 @@ export default [{
             component: EventsPage,
         },
         {
+            path: '/event/:eventId',
+            component: EventPageContainer,
+        },
+        {
             path: '/speakers',
             component: SpeakersPage,
         },
@@ -29,6 +36,10 @@ export default [{
         {
             path: '/feed',
             component: FeedPage
-        }
+        }, 
+        {
+            path: '**',
+            component: NotFoundPage,
+        },
     ],
 }];
