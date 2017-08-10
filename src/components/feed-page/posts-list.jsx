@@ -100,7 +100,7 @@ const Description = styled.p`
     color: ${props => props.theme.greyishBrown};
 `;
 
-const PostsList = ({ theme }) => (
+const PostsList = ({ theme, posts }) => (
     <Container>
         {posts.map((post, postIndex) => (
             <Post>
@@ -131,6 +131,7 @@ const PostsList = ({ theme }) => (
 
 PostsList.propTypes = {
     theme: React.PropTypes.object,
+    posts: PropTypes.instanceOf(List).isRequired,
 };
 
 export default withTheme(PostsList);

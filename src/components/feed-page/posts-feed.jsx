@@ -51,6 +51,7 @@ const PostsFeed = ({ theme }) => (
 
 PostsFeed.propTypes = {
     theme: React.PropTypes.object,
+    posts: React.PropTypes.instanceOf(List).isRequired,
 };
 
 export default withTheme(PostsFeed);
