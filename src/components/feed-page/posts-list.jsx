@@ -1,23 +1,29 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
+import Masonry from 'react-masonry-component';
 
 import BlockHeader from '../common/block-header';
 import { TagList } from '../common/tag';
-import { media } from '../../utils/css-utils';
+import {
+    media,
+    isPhone,
+    isTablet,
+} from '../../utils/css-utils';
 import { WebpurpleStampIcon } from '../icons';
 
 import posts, { tags } from './posts-stub';
 
+const gutter = isTablet() ? 30 : 75; // space between cards
 
-const Container = styled.ul`
-    list-style: none;
+const Container = styled(({ children, className }) => (
+    isPhone()
+        ? <ul className={className}>{children}</ul>
+        : <Masonry className={className} elementType="ul" options={{ gutter, fitWidth: true }}>{children}</Masonry>
+))`list-style: none;
     padding: 0;
-    margin: 3.6rem 0 0;
-    ${media.desktop`margin-top: 10rem;`}
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-`;
+    margin: 3.6rem auto 0;
+    ${media.desktop`margin-top: 10rem;`}`;
+
 
 const Post = styled.li`
     position: relative;
