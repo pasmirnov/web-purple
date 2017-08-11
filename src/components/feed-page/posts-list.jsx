@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import Masonry from 'react-masonry-component';
+import { List } from 'immutable';
 
 import BlockHeader from '../common/block-header';
 import { TagList } from '../common/tag';
@@ -19,7 +20,7 @@ const Container = styled(({ children, className }) => (
     isPhone()
         ? <ul className={className}>{children}</ul>
         : <Masonry className={className} elementType="ul" options={{ gutter, fitWidth: true }}>{children}</Masonry>
-))`list-style: none;
+)) `list-style: none;
     padding: 0;
     margin: 3.6rem auto 0;
     ${media.desktop`margin-top: 10rem;`}`;
@@ -119,19 +120,19 @@ const PostsList = ({ theme, posts }) => (
                 <Description>
                     {post.description}
                 </Description>
-                <AuthorBadge>
-                    <AuthorPhoto src={post.author.avatar} />
+                {post.author ? <AuthorBadge>
+                    <AuthorPhoto src={post.author.vkPhotoUrl} />
                     {post.author.displayName}
-                </AuthorBadge>
-                <TagList tags={post.tags} />
+                </AuthorBadge> : ''}
+                <TagList tags={tags} />
             </Post>
         ))}
-   </Container>
+    </Container>
 );
 
 PostsList.propTypes = {
     theme: React.PropTypes.object,
-    posts: PropTypes.instanceOf(List).isRequired,
+    posts: React.PropTypes.instanceOf(List).isRequired,
 };
 
 export default withTheme(PostsList);

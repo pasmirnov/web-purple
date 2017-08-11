@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
+import { List } from 'immutable';
 
 import { tags } from './posts-stub';
 import BlockHeader from '../common/block-header';
@@ -35,7 +36,7 @@ const Icon = styled.span`
 `;
 
 
-const PostsFeed = ({ theme }) => (
+const PostsFeed = ({ theme, posts }) => (
     <MainContainer>
         <BlockHeader>Feed</BlockHeader>
         <FilterBlock>
@@ -45,7 +46,7 @@ const PostsFeed = ({ theme }) => (
         {(tags.length > 0) && (
             <TagList label="News' tags" tags={tags} />
         )}
-        <PostsList>
+        <PostsList posts={posts}>
         </PostsList>
     </MainContainer>);
 

@@ -54,7 +54,7 @@ module.exports = () => {
         })
         // get all posts
         .get(({ query: { type, from, limit } }, response) => {
-            Post.find({ type: type || null }) // by default normal (not suggested) posts should be returned
+            Post.find() // by default normal (not suggested) posts should be returned
                 .sort('-date')
                 .skip(parseInt(from, 10) || 0)
                 .limit(parseInt(limit, 10) || null)
@@ -69,6 +69,7 @@ module.exports = () => {
         // get post by id
         .get((request, response) => Post.findById(request.params.post_id)
             .populate('author')
+            .select({ vkId: 0 })
             .lean()
             .exec()
             .then(post => response.send(post))

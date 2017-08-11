@@ -1,5 +1,7 @@
 import { List, fromJS } from 'immutable';
-import {createAction} from 'react-redux';
+import { createAction } from 'redux-actions';
+import { createSelector } from 'reselect';
+import { getJson } from '../../utils/ajax';
 
 const initialState = fromJS({
     isFetching: false,
@@ -25,14 +27,13 @@ export default function reducer(state = initialState, action) {
 const requestPosts = createAction(REQUEST_POSTS);
 const receivePosts = createAction(RECEIVE_POSTS);
 
-export function loadPosts() {
-    return dispatch => {
-        dispatch(requestPosts());
-        return getJson('/api/posts')
-            .then(events => dispatch(receivePosts(events)));
-    };
-}
+export const loadPosts = () => dispatch => {
+    dispatch(requestPosts());
+    return getJson('/api/posts')
+        .then(posts => dispatch(receivePosts(posts)));
+};
 
-export const allPostsSelector = state => state.events.get('posts');
 
-export const postsSelector = createSelector(allPostsSelector);
+export const allPostsSelector = state =>  {
+    return state.posts.get('posts')
+};
