@@ -104,7 +104,7 @@ const Description = styled.p`
 const PostsList = ({ theme, posts }) => (
     <Container>
         {posts.map((post, postIndex) => (
-            <Post>
+            <Post key={post._id}>
                 <BackgroundShape>
                     <BackgroundImage url={post.image} />
                 </BackgroundShape>
