@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import Masonry from 'react-masonry-component';
 import { List } from 'immutable';
+import { compose, lifecycle, setPropTypes } from 'recompose';
 
 import BlockHeader from '../common/block-header';
 import { TagList } from '../common/tag';
@@ -130,9 +131,13 @@ const PostsList = ({ theme, posts }) => (
     </Container>
 );
 
-PostsList.propTypes = {
+const propTypes = {
     theme: React.PropTypes.object,
     posts: React.PropTypes.instanceOf(List).isRequired,
 };
 
-export default withTheme(PostsList);
+export default compose(
+    withTheme,
+    setPropTypes(propTypes),
+)(PostsList);
+

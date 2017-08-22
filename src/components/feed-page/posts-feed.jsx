@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { List } from 'immutable';
+import { compose, setPropTypes } from 'recompose';
 
 import { tags } from './posts-stub';
 import BlockHeader from '../common/block-header';
@@ -63,10 +64,14 @@ const PostsFeed = ({ theme, posts, isFetching }) => (
                 }
     </MainContainer>);
 
-PostsFeed.propTypes = {
+const propTypes = {
     theme: React.PropTypes.object,
     posts: React.PropTypes.instanceOf(List).isRequired,
     isFetching: React.PropTypes.bool
 };
 
-export default withTheme(PostsFeed);
+
+export default compose(
+    withTheme,
+    setPropTypes(propTypes),
+)(PostsFeed);
