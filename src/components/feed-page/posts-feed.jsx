@@ -14,6 +14,7 @@ import {
 import PostsList from './posts-list';
 
 import { TagList } from '../common/tag';
+import Loader from '../common/loader';
 
 const BorderlessButton = styled.button` 
     font-family: Rubik;
@@ -35,8 +36,16 @@ const Icon = styled.span`
 	line-height: 1.0;
 `;
 
+export const NoEventsBlock = styled.div`
+    margin: 10rem 0;
+    text-align: center;
+    font-family: 'Oxygen', sans-serif;
+    font-size: 2.5rem;
+    color: ${props => props.theme.warmPurple};
+`;
 
-const PostsFeed = ({ theme, posts }) => (
+
+const PostsFeed = ({ theme, posts, isFetching }) => (
     <MainContainer>
         <BlockHeader>Feed</BlockHeader>
         <FilterBlock>
@@ -46,13 +55,18 @@ const PostsFeed = ({ theme, posts }) => (
         {(tags.length > 0) && (
             <TagList label="News' tags" tags={tags} />
         )}
-        <PostsList posts={posts}>
-        </PostsList>
+
+        {isFetching ? <Loader size="80" border="8" />
+            : posts.size === 0
+                ? <NoEventsBlock>There are no posts satisfying your query...</NoEventsBlock>
+                : <PostsList posts={posts} />
+                }
     </MainContainer>);
 
 PostsFeed.propTypes = {
     theme: React.PropTypes.object,
     posts: React.PropTypes.instanceOf(List).isRequired,
+    isFetching: React.PropTypes.bool
 };
 
 export default withTheme(PostsFeed);

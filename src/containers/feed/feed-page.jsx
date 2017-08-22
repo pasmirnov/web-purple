@@ -29,6 +29,7 @@ const propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
     posts: allPostsSelector(state, ownProps),
+    isFetching: state.posts.get('isFetching'),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
