@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import SubscriptionForm from '../../components/subscription-form/subscription-form';
 import PostsFeed from '../../components/feed-page/posts-feed';
 
-import { allPostsSelector, loadPosts } from './posts-reducers.js';
+import { postsSelector, loadPosts, searchPosts } from './posts-reducers.js';
 
 const FeedPageContainer = (props) => (
     <div>
@@ -28,12 +28,13 @@ const propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    posts: allPostsSelector(state, ownProps),
+    posts: postsSelector(state, ownProps),
     isFetching: state.posts.get('isFetching'),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     loadPosts,
+    onSearch: searchPosts
 }, dispatch);
 
 export default compose(

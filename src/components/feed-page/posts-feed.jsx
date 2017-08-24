@@ -45,13 +45,13 @@ export const NoEventsBlock = styled.div`
     color: ${props => props.theme.warmPurple};
 `;
 
-
-const PostsFeed = ({ theme, posts, isFetching }) => (
+const PostsFeed = ({ theme, posts, isFetching, onSearch }) => (
     <MainContainer>
         <BlockHeader>Feed</BlockHeader>
         <FilterBlock>
             <BorderlessButton> <Icon>+</Icon>Suggest news</BorderlessButton>
-            <Search placeholder="Keyword..." />
+            <Search placeholder="Keyword..."
+                onChange={event => onSearch(event.target.value)} />
         </FilterBlock>
         {(tags.length > 0) && (
             <TagList label="News' tags" tags={tags} />
@@ -61,12 +61,13 @@ const PostsFeed = ({ theme, posts, isFetching }) => (
             : posts.size === 0
                 ? <NoEventsBlock>There are no posts satisfying your query...</NoEventsBlock>
                 : <PostsList posts={posts} />
-                }
+        }
     </MainContainer>);
 
 const propTypes = {
     theme: React.PropTypes.object,
     posts: React.PropTypes.instanceOf(List).isRequired,
+    onSearch: React.PropTypes.func,
     isFetching: React.PropTypes.bool
 };
 
